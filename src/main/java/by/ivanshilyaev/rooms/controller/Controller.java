@@ -29,7 +29,8 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        System.out.println("here");
+
+
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         JsonObject data = new Gson().fromJson(req.getReader(), JsonObject.class);
@@ -37,10 +38,8 @@ public class Controller extends HttpServlet {
             Map<String, String> resultMap = new HashMap<>();
             if (data.get("button").getAsString().equals("On")) {
                 resultMap.put("lamp", "Off");
-                System.out.println("here 1");
             } else {
                 resultMap.put("lamp", "On");
-                System.out.println("here 2");
             }
             out.write(new Gson().toJson(resultMap));
         }
