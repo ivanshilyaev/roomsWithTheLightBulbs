@@ -8,12 +8,13 @@ function connect() {
 
     ws.onmessage = function (event) {
         let lamp = JSON.parse(event.data);
-        $("#button").html(lamp.state);
+        let button = document.getElementById("button");
+        button.innerHTML = lamp.state;
     };
 }
 
 function send() {
-    let state = $("#button").text();
+    let state = document.getElementById("button").innerHTML;
     let json = JSON.stringify({
         "state": state
     });

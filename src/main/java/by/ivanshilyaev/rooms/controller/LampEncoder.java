@@ -8,11 +8,11 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 public class LampEncoder implements Encoder.Text<Lamp> {
-    private static final Gson GSON = new Gson();
+    private static Gson gson = new Gson();
 
     @Override
     public String encode(Lamp lamp) throws EncodeException {
-        return GSON.toJson(lamp);
+        return gson.toJson(lamp);
     }
 
     @Override

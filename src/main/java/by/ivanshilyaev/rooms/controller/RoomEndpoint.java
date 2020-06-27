@@ -3,7 +3,6 @@ package by.ivanshilyaev.rooms.controller;
 import by.ivanshilyaev.rooms.bean.Lamp;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,9 +21,6 @@ public class RoomEndpoint {
         this.session = session;
         roomEndpoints.add(this);
         users.put(session.getId(), "username");
-//        Lamp lamp = new Lamp();
-//        lamp.setState("On");
-//        broadcast(lamp);
     }
 
     @OnMessage
