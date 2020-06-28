@@ -3,9 +3,9 @@ package by.ivanshilyaev.rooms.controller;
 import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
-import com.google.gson.Gson;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,21 +13,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(value = "/room.html", encoders = LampEncoder.class, decoders = LampDecoder.class)
+@ServerEndpoint(value = "/room.html/{roomId}", encoders = LampEncoder.class, decoders = LampDecoder.class)
 public class RoomEndpoint {
     private Session session;
-    private static final Set<RoomEndpoint> roomEndpoints = new CopyOnWriteArraySet<>();
-    private static Map<String, String> users = new HashMap<>();
-    private static final Gson GSON = new Gson();
-    private static String filePath = "/Users/ivansilaev/Downloads/gitRepos/roomsWithTheLightBulbs/src/main/resources/lamp.json";
-
-    public static int roomId;
+    private int roomId;
+    private static final Map<Integer, Set<RoomEndpoint>> repository = new HashMap<>();
+    private static Map<String, String> users = new HashMap<>(); // for country
 
     @OnOpen
-    public void onOpen(Session session) throws IOException, EncodeException, ServiceException {
+    public void onOpen(Session session, @PathParam("roomId") int roomId) throws IOException, EncodeException, ServiceException {
         this.session = session;
-        roomEndpoints.add(this);
-        System.out.println(session.getRequestURI());
+        this.roomId = roomId;
+        if (repository.containsKey(roomId)) {
+            repository.get(roomId).add(this);
+        } else {
+            Set<RoomEndpoint> roomEndpoints = new CopyOnWriteArraySet<>();
+            roomEndpoints.add(this);
+            repository.put(roomId, roomEndpoints);
+        }
+
         users.put(session.getId(), "username");
         Room room = Controller.service.read(roomId).get();
         Lamp current = new Lamp();
@@ -46,12 +50,12 @@ public class RoomEndpoint {
         Room room = Controller.service.read(roomId).get();
         room.setLampState(response.getState());
         Controller.service.update(room);
-        broadcast(response);
+        broadcast(response, roomId);
     }
 
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
-        roomEndpoints.remove(this);
+        repository.get(roomId).remove(this);
     }
 
     @OnError
@@ -59,7 +63,8 @@ public class RoomEndpoint {
         // Do error handling here
     }
 
-    private static void broadcast(Lamp lamp) throws IOException, EncodeException {
+    private static void broadcast(Lamp lamp, int roomId) throws IOException, EncodeException {
+        Set<RoomEndpoint> roomEndpoints = repository.get(roomId);
         roomEndpoints.forEach(endpoint -> {
             synchronized (endpoint) {
                 try {

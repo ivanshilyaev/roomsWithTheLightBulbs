@@ -39,7 +39,8 @@ public class Runner {
         initConnectionPool();
         try {
             RoomService service = new RoomServiceImpl();
-            service.delete(2);
+            Room room = new Room("second", "Germany", "Off");
+            service.create(room);
             System.out.println(service.read());
         } catch (ServiceException e) {
             e.printStackTrace();
