@@ -3,21 +3,31 @@ package by.ivanshilyaev.rooms.bean;
 import java.util.Objects;
 
 public class Room {
+    private int id;
     private String name;
     private String country;
-    private boolean lamp;
+    private String lampState;
 
     public Room() {
     }
 
-    public Room(boolean lamp) {
-        this.lamp = lamp;
+    public Room(int id) {
+        this.id = id;
     }
 
-    public Room(String name, String country, boolean lamp) {
+    public Room(int id, String name, String country, String lampState) {
+        this.id = id;
         this.name = name;
         this.country = country;
-        this.lamp = lamp;
+        this.lampState = lampState;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,12 +46,12 @@ public class Room {
         this.country = country;
     }
 
-    public boolean isLamp() {
-        return lamp;
+    public String getLampState() {
+        return lampState;
     }
 
-    public void setLamp(boolean lamp) {
-        this.lamp = lamp;
+    public void setLampState(String lampState) {
+        this.lampState = lampState;
     }
 
     @Override
@@ -49,22 +59,24 @@ public class Room {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return lamp == room.lamp &&
+        return id == room.id &&
                 name.equals(room.name) &&
-                country.equals(room.country);
+                country.equals(room.country) &&
+                lampState.equals(room.lampState);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, country, lamp);
+        return Objects.hash(id, name, country, lampState);
     }
 
     @Override
     public String toString() {
         return "Room{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                ", lamp=" + lamp +
+                ", lampState='" + lampState + '\'' +
                 '}';
     }
 }

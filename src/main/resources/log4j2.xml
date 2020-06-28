@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="FATAL">
+    <Appenders>
+        <RollingFile name="errorLogFile" fileName="src/main/logs/errorLog.log"
+                     filePattern="logs/errorLog-%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <PatternLayout pattern="%d{dd:MM:yyyy HH:mm:ss} [%t] %-5level %C{2} %M %msg%n"/>
+            <SizeBasedTriggeringPolicy size="2MB"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="logger" level="All">
+            <AppenderRef ref="errorLogFile"/>
+        </Logger>
+        <Root level="All">
+            <AppenderRef ref="errorLogFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
