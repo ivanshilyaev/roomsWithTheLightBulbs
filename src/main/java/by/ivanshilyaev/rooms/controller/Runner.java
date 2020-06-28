@@ -1,5 +1,6 @@
 package by.ivanshilyaev.rooms.controller;
 
+import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.interfaces.RoomDao;
 import by.ivanshilyaev.rooms.dao.mysql.RoomDaoImpl;
@@ -38,6 +39,7 @@ public class Runner {
         initConnectionPool();
         try {
             RoomService service = new RoomServiceImpl();
+            service.delete(2);
             System.out.println(service.read());
         } catch (ServiceException e) {
             e.printStackTrace();

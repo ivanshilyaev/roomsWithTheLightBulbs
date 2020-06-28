@@ -15,6 +15,12 @@ public class Room {
         this.id = id;
     }
 
+    public Room(String name, String country, String lampState) {
+        this.name = name;
+        this.country = country;
+        this.lampState = lampState;
+    }
+
     public Room(int id, String name, String country, String lampState) {
         this.id = id;
         this.name = name;

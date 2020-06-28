@@ -8,6 +8,7 @@ import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
     private static RoomDao dao = new RoomDaoImpl();
@@ -25,6 +26,15 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> read() throws ServiceException {
         try {
             return dao.read();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<Room> read(Integer id) throws ServiceException {
+        try {
+            return dao.read(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

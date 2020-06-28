@@ -7,20 +7,33 @@ import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RoomDaoImpl implements RoomDao {
     private Connection connection;
 
+    private static final Integer BAD_CREATION_CODE = -1;
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String SQL_SELECT_ALL_ROOMS =
-            "SELECT id, name, country, lampState FROM room";
+            "SELECT id, name, country, lampState FROM room;";
+
+    private static final String SQL_SELECT_ROOM_BY_ID =
+            "SELECT id, name, country, lampState FROM room WHERE id = ?;";
+
+    private static final String SQL_INSERT =
+            "INSERT INTO room (name, country, lampState) values (?, ?, ?);";
+
+    private static final String SQL_UPDATE =
+            "UPDATE room SET name = ?, country = ?, lampState = ? WHERE id = ?;";
+
+    private static final String SQL_DELETE_ROOM_BY_ID =
+            "DELETE FROM room WHERE id = ?;";
+
 
     public RoomDaoImpl() {
         try {
@@ -32,6 +45,23 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public Integer create(Room entity) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getCountry());
+            statement.setString(3, entity.getLampState());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                entity.setId(id);
+                return id;
+            } else {
+                LOGGER.error("No autoincremented index after trying to add record into table user");
+                return BAD_CREATION_CODE;
+            }
+        } catch (SQLException throwables) {
+            LOGGER.error("DB connection error", throwables);
+        }
         return null;
     }
 
@@ -45,6 +75,7 @@ public class RoomDaoImpl implements RoomDao {
                 fillRoom(resultSet, room);
                 rooms.add(room);
             }
+            resultSet.close();
         } catch (SQLException throwables) {
             LOGGER.error("DB connection error", throwables);
         }
@@ -52,13 +83,46 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     @Override
-    public void update(Room entity) {
+    public Optional<Room> read(Integer id) throws DAOException {
+        Room room = null;
+        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ROOM_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                room = new Room();
+                fillRoom(resultSet, room);
+            }
+            resultSet.close();
+        } catch (SQLException throwables) {
+            LOGGER.error("DB connection error", throwables);
+        }
+        return Optional.ofNullable(room);
+    }
 
+    @Override
+    public void update(Room entity) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getCountry());
+            statement.setString(3, entity.getLampState());
+            statement.setInt(4, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            LOGGER.error("DB connection error", throwables);
+        }
     }
 
     @Override
     public boolean delete(Integer id) throws DAOException {
-        return false;
+        boolean deleted = false;
+        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_ROOM_BY_ID)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            deleted = true;
+        } catch (SQLException throwables) {
+            LOGGER.error("DB connection error", throwables);
+        }
+        return deleted;
     }
 
     private void fillRoom(ResultSet resultSet, Room room) throws SQLException {
