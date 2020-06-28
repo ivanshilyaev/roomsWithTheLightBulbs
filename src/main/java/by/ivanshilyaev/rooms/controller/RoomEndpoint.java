@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(value = "/room", encoders = LampEncoder.class, decoders = LampDecoder.class)
+@ServerEndpoint(value = "/room.jsp", encoders = LampEncoder.class, decoders = LampDecoder.class)
 public class RoomEndpoint {
     private Session session;
     private static final Set<RoomEndpoint> roomEndpoints = new CopyOnWriteArraySet<>();
@@ -26,6 +26,7 @@ public class RoomEndpoint {
     public void onOpen(Session session) throws IOException, EncodeException {
         this.session = session;
         roomEndpoints.add(this);
+        System.out.println(session.getRequestURI());
         users.put(session.getId(), "username");
         Lamp current = GSON.fromJson(new FileReader(filePath), Lamp.class);
         session.getBasicRemote().sendObject(current);

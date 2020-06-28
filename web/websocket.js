@@ -4,7 +4,7 @@ function connect() {
     let host = document.location.host;
     let pathname = document.location.pathname;
 
-    ws = new WebSocket("ws://" + host + pathname + "room");
+    ws = new WebSocket("ws://" + host + pathname);
 
     ws.onmessage = function (event) {
         let lamp = JSON.parse(event.data);
