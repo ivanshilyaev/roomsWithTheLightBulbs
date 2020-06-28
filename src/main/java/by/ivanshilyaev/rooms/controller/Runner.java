@@ -4,6 +4,9 @@ import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.interfaces.RoomDao;
 import by.ivanshilyaev.rooms.dao.mysql.RoomDaoImpl;
 import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
+import by.ivanshilyaev.rooms.service.exception.ServiceException;
+import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
+import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,9 +37,9 @@ public class Runner {
     public static void main(String[] args) {
         initConnectionPool();
         try {
-            RoomDao roomDao = new RoomDaoImpl();
-            System.out.println(roomDao.read());
-        } catch (DAOException e) {
+            RoomService service = new RoomServiceImpl();
+            System.out.println(service.read());
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
     }
