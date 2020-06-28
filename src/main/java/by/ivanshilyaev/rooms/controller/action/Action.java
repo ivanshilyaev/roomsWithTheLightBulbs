@@ -1,5 +1,7 @@
 package by.ivanshilyaev.rooms.controller.action;
 
+import by.ivanshilyaev.rooms.service.exception.ServiceException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
@@ -17,7 +19,7 @@ public abstract class Action {
         this.name = name;
     }
 
-    public abstract Forward exec(HttpServletRequest request, HttpServletResponse response);
+    public abstract Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException;
 
     public static class Forward implements Serializable {
         private String forward;

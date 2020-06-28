@@ -1,6 +1,7 @@
 package by.ivanshilyaev.rooms.controller;
 
 import by.ivanshilyaev.rooms.controller.action.Action;
+import by.ivanshilyaev.rooms.controller.action.user.ListOfRoomsAction;
 import by.ivanshilyaev.rooms.controller.action.user.RoomAction;
 
 import javax.servlet.*;
@@ -15,6 +16,7 @@ public class ActionFromUriFilter implements Filter {
     private static Map<String, Action> actions = new ConcurrentHashMap<>();
 
     static {
+        actions.put("/listOfRooms", new ListOfRoomsAction());
         actions.put("/room", new RoomAction());
     }
 

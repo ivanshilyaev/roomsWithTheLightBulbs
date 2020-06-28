@@ -5,9 +5,14 @@
     <title>Menu</title>
 </head>
 <body>
-<c:url value="/room.jsp" var="roomUrl"/>
-<form name="goToRoom" method="POST" action="${roomUrl}">
-    <input type="submit" value="Room">
+<c:url value="/createRoom.html" var="createRoomUrl"/>
+<form name="createRoom" method="POST" action="${createRoomUrl}">
+    <input type="submit" value="Create new room">
+</form>
+<br>
+<c:url value="/listOfRooms.html" var="listOfRoomsUrl"/>
+<form name="listOfRooms" method="POST" action="${listOfRoomsUrl}">
+    <input type="submit" value="List of all rooms">
 </form>
 </body>
 </html>
