@@ -1,9 +1,9 @@
 package by.ivanshilyaev.rooms.controller;
 
 import by.ivanshilyaev.rooms.controller.action.Action;
-import by.ivanshilyaev.rooms.controller.action.user.CreateRoomAction;
-import by.ivanshilyaev.rooms.controller.action.user.ListOfRoomsAction;
-import by.ivanshilyaev.rooms.controller.action.user.RoomAction;
+import by.ivanshilyaev.rooms.controller.action.user.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -14,9 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @WebFilter(filterName = "ActionFromUriFilter", urlPatterns = {"*.html"})
 public class ActionFromUriFilter implements Filter {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private static Map<String, Action> actions = new ConcurrentHashMap<>();
 
     static {
+        actions.put("/", new ForwardToIndexAction());
+        actions.put("/index", new MainAction());
         actions.put("/createRoom", new CreateRoomAction());
         actions.put("/listOfRooms", new ListOfRoomsAction());
         actions.put("/room", new RoomAction());
@@ -24,7 +28,6 @@ public class ActionFromUriFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -33,6 +36,7 @@ public class ActionFromUriFilter implements Filter {
             HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String contextPath = httpRequest.getContextPath();
             String uri = httpRequest.getRequestURI();
+            LOGGER.debug(String.format("Starting to process request for URI \"%s\"", uri));
             int beginAction = contextPath.length();
             int endAction = uri.lastIndexOf('.');
             String actionName;
@@ -47,20 +51,16 @@ public class ActionFromUriFilter implements Filter {
                 httpRequest.setAttribute("action", action);
                 filterChain.doFilter(servletRequest, servletResponse);
             } catch (NullPointerException e) {
-                if (actionName.equals("/")) {
-                    httpRequest.getServletContext().getRequestDispatcher("/index.jsp").forward(servletRequest, servletResponse);
-                }
-//                else {
-//                    httpRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error404.jsp").forward(servletRequest, servletResponse);
-//                }
+                LOGGER.error("Impossible to create action handler object", e);
+                httpRequest.getServletContext().getRequestDispatcher("/error404.jsp").forward(servletRequest, servletResponse);
             }
         } else {
-            //servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
+            LOGGER.error("Impossible to use HTTP filter");
+            servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
         }
     }
 
     @Override
     public void destroy() {
-
     }
 }

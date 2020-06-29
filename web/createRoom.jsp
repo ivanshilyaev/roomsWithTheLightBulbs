@@ -21,6 +21,10 @@
     </label> <br>
     <input type="submit" value="Create">
 </form>
-${requestScope.createRoomMessage}
+${requestScope.createRoomMessage} <br>
+<c:url value="/index.html" var="indexUrl"/>
+<form name="index" method="POST" action="${indexUrl}">
+    <input type="submit" value="Main page">
+</form>
 </body>
 </html>

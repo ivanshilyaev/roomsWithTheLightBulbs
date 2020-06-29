@@ -99,7 +99,9 @@ public class Controller extends HttpServlet {
                 getServletContext().getRequestDispatcher(page).forward(req, resp);
             }
         } catch (ServiceException e) {
-            // forward to 404
+            LOGGER.error("Impossible to process request", e);
+            req.setAttribute("error", "Can't process data");
+            req.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
         }
     }
 }
