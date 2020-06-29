@@ -8,17 +8,16 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value = "/room.html/{roomId}", encoders = LampEncoder.class, decoders = LampDecoder.class)
 public class RoomEndpoint {
     private Session session;
     private int roomId;
-    private static final Map<Integer, Set<RoomEndpoint>> repository = new HashMap<>();
-    private static Map<String, String> users = new HashMap<>(); // for country
+    private static final Map<Integer, Set<RoomEndpoint>> repository = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("roomId") int roomId) throws IOException, EncodeException, ServiceException {
@@ -31,8 +30,6 @@ public class RoomEndpoint {
             roomEndpoints.add(this);
             repository.put(roomId, roomEndpoints);
         }
-
-        users.put(session.getId(), "username");
         Room room = Controller.service.read(roomId).get();
         Lamp current = new Lamp();
         current.setState(room.getLampState());

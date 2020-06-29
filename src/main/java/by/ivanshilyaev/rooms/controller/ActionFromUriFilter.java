@@ -56,7 +56,7 @@ public class ActionFromUriFilter implements Filter {
             }
         } else {
             LOGGER.error("Impossible to use HTTP filter");
-            servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
+            servletRequest.getServletContext().getRequestDispatcher("/error.jsp").forward(servletRequest, servletResponse);
         }
     }
 
