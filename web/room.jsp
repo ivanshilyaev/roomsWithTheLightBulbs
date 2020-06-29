@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Room</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" src="websocket.js"></script>
 </head>
 <body onload="connect();">
