@@ -8,7 +8,8 @@
 </head>
 <body onload="connect();">
 <img id="img-id" src="" alt="">
-<p hidden id="p-roomId">${requestScope.roomId}</p>
+Room id:
+<p id="p-roomId">${requestScope.roomId}</p>
 <button id="button-id" onclick="send();"></button>
 </body>
 </html>

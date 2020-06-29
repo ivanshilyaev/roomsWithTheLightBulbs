@@ -8,8 +8,6 @@ import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "Controller", urlPatterns = "*.html")
@@ -69,9 +65,24 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
+            HttpSession session = req.getSession(false);
+            if (session != null) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> attributes = (Map<String, Object>)
+                        session.getAttribute("redirectedData");
+                if (attributes != null) {
+                    for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+                        req.setAttribute(entry.getKey(), entry.getValue());
+                    }
+                    session.removeAttribute("redirectedData");
+                }
+            }
             Action action = (Action) req.getAttribute("action");
             ActionManager actionManager = new ActionManagerImpl();
             Action.Forward forward = actionManager.execute(action, req, resp);
+            if (session != null && forward != null && !forward.getAttributes().isEmpty()) {
+                session.setAttribute("redirectedData", forward.getAttributes());
+            }
             String requestedUri = req.getRequestURI();
             if (forward != null && forward.isRedirect()) {
                 String redirectedUri = req.getContextPath() + forward.getForward();

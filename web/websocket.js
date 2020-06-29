@@ -15,8 +15,10 @@ function connect() {
         document.getElementById("img-id").src = "img/" + lamp.state + ".png";
         if (lamp.state.localeCompare("On") == 0) {
             document.body.style.backgroundColor = "white";
+            document.body.style.color = "black";
         } else {
             document.body.style.backgroundColor = "black";
+            document.body.style.color = "white";
         }
     };
 }
