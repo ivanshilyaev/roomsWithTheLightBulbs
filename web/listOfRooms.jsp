@@ -13,7 +13,7 @@
                 <c:url value="/room.html" var="roomUrl"/>
                 <form name="room" method="POST" action="${roomUrl}">
                     <input type="hidden" name="roomId" value="${room.id}">
-                    <input type="submit" value="<c:out value="${room.name}"/>">
+                    <input type="submit" value="<c:out value="${room.name}: ${room.country}"/>">
                 </form>
             </td>
         </tr>

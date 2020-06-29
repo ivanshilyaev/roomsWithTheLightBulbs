@@ -8,11 +8,20 @@ import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CountryResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Runner {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -39,9 +48,7 @@ public class Runner {
         initConnectionPool();
         try {
             RoomService service = new RoomServiceImpl();
-            Room room = new Room("second", "Germany", "Off");
-            service.create(room);
-            System.out.println(service.read());
+            service.read();
         } catch (ServiceException e) {
             e.printStackTrace();
         }
