@@ -26,7 +26,7 @@ public class RoomAction extends Action {
 
     @Override
     public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        try (Scanner s = new java.util.Scanner(new URL("https://api.ipify.org").openStream(), StandardCharsets.UTF_8).useDelimiter("\\A")) {
+        try (Scanner s = new java.util.Scanner(new URL("https://api.ipify.org").openStream(), "UTF-8").useDelimiter("\\A")) {
             String ip = s.next();
             File database = new File("/Users/ivansilaev/Downloads/gitRepos/roomsWithTheLightBulbs/src/main/resources/GeoLite2-Country.mmdb");
             DatabaseReader reader = new DatabaseReader.Builder(database).build();
