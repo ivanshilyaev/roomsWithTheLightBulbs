@@ -3,8 +3,10 @@
 <html>
 <head>
     <title>Create new room</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+<div class="content" id="content">
 <c:url value="/createRoom.html" var="createRoomUrl"/>
 <form name="room" method="POST" action="${createRoomUrl}">
     <label>
@@ -21,10 +23,11 @@
     </label> <br>
     <input type="submit" value="Create">
 </form>
-${requestScope.createRoomMessage} <br>
-<c:url value="/index.html" var="indexUrl"/>
-<form name="index" method="POST" action="${indexUrl}">
-    <input type="submit" value="Main page">
-</form>
+    ${requestScope.createRoomMessage} <br>
+    <c:url value="/index.html" var="indexUrl"/>
+    <form class="menu-form" name="index" method="POST" action="${indexUrl}">
+        <input type="submit" value="Main page">
+    </form>
+</div>
 </body>
 </html>

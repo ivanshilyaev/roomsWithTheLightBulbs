@@ -8,13 +8,19 @@
     <script type="text/javascript" src="websocket.js"></script>
 </head>
 <body onload="connect();">
-<img id="img-id" src="" alt="">
-Room id:
-<p id="p-roomId">${requestScope.roomId}</p>
-<button id="button-id" onclick="send();"></button>
-<c:url value="/index.html" var="indexUrl"/>
-<form name="index" method="POST" action="${indexUrl}">
-    <input type="submit" value="Main page">
-</form>
+<div class="content" id="content">
+    <img id="img-id" src="" alt="">
+    <div class="lamp-description">
+        <br>
+        Room id: <span id="p-roomId">${requestScope.roomId}</span>
+        <br><br>
+        <button id="button-id" onclick="send();"></button>
+        <br><br>
+        <c:url value="/index.html" var="indexUrl"/>
+        <form class="menu-form" name="index" method="POST" action="${indexUrl}">
+            <input type="submit" value="Main page">
+        </form>
+    </div>
+</div>
 </body>
 </html>
