@@ -33,4 +33,43 @@
 
 ---
 
+For now clone the project
+```
+git clone https://github.com/ivanshilyaev/roomsWithTheLightBulbs
+```
+
+and then import it into Intellij.
+
+Soon this [link](https://rooms-with-the-light-bulbs.herokuapp.com/) will be available.
+
+List of technologies used:
+
+- Java 8 (14)
+
+- Maven 3.6.3
+
+- Servlets, JSP, WebSockets
+
+- MySQL 8.0.20
+
+- JUnit 5.1.0
+
+- Log4j2 2.13.0
+
+- Gson 2.8.6
+
+-  GeoIP2 2.14.0
+
+- IntelliJ IDEA 2020.1.2
+
+Appearance:
+
+![](img/1.png)
+
+![](img/2.png)
+
+![](img/3.png)
+
+![](img/4.png)
+
 by [@ivanshilyaev](https://github.com/ivanshilyaev), 2020
