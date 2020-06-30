@@ -33,12 +33,20 @@
 
 ---
 
-For now clone the project
+For now:
+
+1. clone the project
 ```
 git clone https://github.com/ivanshilyaev/roomsWithTheLightBulbs
 ```
 
-and then import it into Intellij.
+2. import it into Intellij using Maven;
+
+3. add Artifact Web Application: Exploded -> From Modules -> roomsWithTheLightBulbs -> Apply;
+
+4. install Tomcat and add Tomcat Server Local configuration using created artifact;
+
+5. run the application.
 
 Soon this [link](https://rooms-with-the-light-bulbs.herokuapp.com/) will be available.
 
@@ -47,6 +55,8 @@ List of technologies used:
 - Java 8 (14)
 
 - Maven 3.6.3
+
+- Tomcat 9.0.31
 
 - Servlets, JSP, WebSockets
 
