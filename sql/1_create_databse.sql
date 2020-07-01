@@ -1,11 +1,11 @@
 CREATE DATABASE room_db;
-create user application@localhost identified by 'application_password';
+CREATE USER application@localhost IDENTIFIED BY 'application_password';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON room_db.*
     TO application@localhost;
 
-create user room_user@localhost identified by 'user_password';
+CREATE USER room_user@localhost IDENTIFIED BY 'user_password';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON room_db.*

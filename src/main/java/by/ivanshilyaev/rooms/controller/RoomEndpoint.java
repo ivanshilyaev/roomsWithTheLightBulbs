@@ -30,9 +30,7 @@ public class RoomEndpoint {
             roomEndpoints.add(this);
             repository.put(roomId, roomEndpoints);
         }
-        Room room = Controller.service.read(roomId).get();
-        Lamp current = new Lamp();
-        current.setState(room.getLampState());
+        Lamp current = Controller.service.read(roomId).get().getLamp();
         session.getBasicRemote().sendObject(current);
     }
 
@@ -45,7 +43,7 @@ public class RoomEndpoint {
             response.setState("On");
         }
         Room room = Controller.service.read(roomId).get();
-        room.setLampState(response.getState());
+        room.setLamp(response);
         Controller.service.update(room);
         broadcast(response, roomId);
     }

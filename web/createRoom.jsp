@@ -17,7 +17,7 @@
         Country: <br>
         <select name="country" id="country">
             <c:forEach items="${requestScope.mapCountries}" var="country">
-                <option value="${country.value}">${country.value}</option>
+                <option value="${country.key}">${country.value}</option>
             </c:forEach>
         </select>
     </label> <br>

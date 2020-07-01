@@ -6,7 +6,7 @@ public class Room {
     private int id;
     private String name;
     private String country;
-    private String lampState;
+    private Lamp lamp;
 
     public Room() {
     }
@@ -15,17 +15,23 @@ public class Room {
         this.id = id;
     }
 
-    public Room(String name, String country, String lampState) {
+    public Room(String name, String country, Lamp lamp) {
         this.name = name;
         this.country = country;
-        this.lampState = lampState;
+        this.lamp = lamp;
     }
 
-    public Room(int id, String name, String country, String lampState) {
+    public Room(String name, String country) {
+        this.name = name;
+        this.country = country;
+        lamp = new Lamp();
+    }
+
+    public Room(int id, String name, String country, Lamp lamp) {
         this.id = id;
         this.name = name;
         this.country = country;
-        this.lampState = lampState;
+        this.lamp = lamp;
     }
 
     public int getId() {
@@ -52,12 +58,12 @@ public class Room {
         this.country = country;
     }
 
-    public String getLampState() {
-        return lampState;
+    public Lamp getLamp() {
+        return lamp;
     }
 
-    public void setLampState(String lampState) {
-        this.lampState = lampState;
+    public void setLamp(Lamp lamp) {
+        this.lamp = lamp;
     }
 
     @Override
@@ -68,12 +74,12 @@ public class Room {
         return id == room.id &&
                 name.equals(room.name) &&
                 country.equals(room.country) &&
-                lampState.equals(room.lampState);
+                lamp.equals(room.lamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, country, lampState);
+        return Objects.hash(id, name, country, lamp);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class Room {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                ", lampState='" + lampState + '\'' +
+                ", lamp='" + lamp.toString() + '\'' +
                 '}';
     }
 }

@@ -11,12 +11,14 @@ function connect() {
     ws.onmessage = function (event) {
         let lamp = JSON.parse(event.data);
         let button = document.getElementById("button-id");
-        button.innerHTML = lamp.state;
-        document.getElementById("img-id").src = "img/" + lamp.state + ".png";
-        if (lamp.state.localeCompare("On") == 0) {
+        if (lamp.state.localeCompare("On") === 0) {
+            button.innerHTML = "On";
+            document.getElementById("img-id").src = "img/On.png";
             document.body.style.backgroundColor = "white";
             document.body.style.color = "black";
         } else {
+            button.innerHTML = "Off";
+            document.getElementById("img-id").src = "img/Off.png";
             document.body.style.backgroundColor = "black";
             document.body.style.color = "white";
         }

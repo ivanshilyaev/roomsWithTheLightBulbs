@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class RoomAction extends Action {
@@ -28,12 +27,11 @@ public class RoomAction extends Action {
     public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         try (Scanner s = new java.util.Scanner(new URL("https://api.ipify.org").openStream(), "UTF-8").useDelimiter("\\A")) {
             String ip = s.next();
-            File database = new File("/src/main/resources/GeoLite2-Country.mmdb");
+            File database = new File("/Users/ivansilaev/Downloads/gitRepos/roomsWithTheLightBulbs/src/main/resources/GeoLite2-Country.mmdb");
             DatabaseReader reader = new DatabaseReader.Builder(database).build();
             InetAddress inetAddress = InetAddress.getByName(ip);
             CountryResponse countryResponse = reader.country(inetAddress);
-            String country = countryResponse.getCountry().getName();
-
+            String country = countryResponse.getCountry().getIsoCode();
             int roomId;
             try {
                 roomId = Integer.parseInt(request.getParameter(PARAM_ROOM_ID));
