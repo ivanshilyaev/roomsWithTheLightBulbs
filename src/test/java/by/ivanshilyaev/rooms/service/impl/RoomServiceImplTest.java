@@ -24,7 +24,7 @@ public class RoomServiceImplTest {
     @Test
     public void testRoom() {
         try {
-            assertEquals(roomService.read(1).get().getName(), "testRoom");
+            assertEquals(roomService.read(2).get().getName(), "testRoom");
         } catch (ServiceException e) {
             LOGGER.error("Unable to read from database");
         }
