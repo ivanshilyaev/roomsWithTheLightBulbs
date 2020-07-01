@@ -47,6 +47,7 @@ public class CreateRoomAction extends Action {
             LOGGER.info(String.format("New room with id %d has been successfully created", room.getId()));
             return forward;
         }
+        request.setAttribute("createRoomMessage", "Unable to create room! Try again");
         return null;
     }
 }

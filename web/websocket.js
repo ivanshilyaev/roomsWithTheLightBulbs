@@ -1,16 +1,16 @@
 let ws;
 
-function connect() {
-    let host = document.location.host;
-    let pathname = document.location.pathname;
+window.onload = function () {
+    const host = document.location.host;
+    const pathname = document.location.pathname;
 
-    let roomId = document.getElementById("p-roomId").innerText;
+    const roomId = document.getElementById("p-roomId").innerText;
 
     ws = new WebSocket("ws://" + host + pathname + "/" + roomId);
 
     ws.onmessage = function (event) {
-        let lamp = JSON.parse(event.data);
-        let button = document.getElementById("button-id");
+        const lamp = JSON.parse(event.data);
+        const button = document.getElementById("button-id");
         if (lamp.state.localeCompare("On") === 0) {
             button.innerHTML = "On";
             document.getElementById("img-id").src = "img/On.png";
@@ -23,12 +23,12 @@ function connect() {
             document.body.style.color = "white";
         }
     };
-}
 
-function send() {
-    let state = document.getElementById("button-id").innerHTML;
-    let json = JSON.stringify({
-        "state": state
-    });
-    ws.send(json);
-}
+    document.getElementById("button-id").onclick = function () {
+        const state = document.getElementById("button-id").innerHTML;
+        const json = JSON.stringify({
+            "state": state
+        });
+        ws.send(json);
+    };
+};

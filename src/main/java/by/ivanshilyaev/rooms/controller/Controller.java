@@ -26,9 +26,12 @@ import java.util.Map;
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    // for local db
     public static final String DB_URL = "jdbc:mysql://localhost:3306/room_db";
     public static final String DB_LOGIN = "application";
     public static final String DB_PASSWORD = "application_password";
+
+    // for remote db
 //    public static final String DB_URL = "jdbc:mysql://b3767a6f5042ec:ec1170a8@eu-cdbr-west-03.cleardb.net/heroku_03d39d7b1d078cd";
 //    public static final String DB_LOGIN = "b3767a6f5042ec";
 //    public static final String DB_PASSWORD = "ec1170a8";

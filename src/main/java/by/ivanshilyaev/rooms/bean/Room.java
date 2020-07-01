@@ -25,6 +25,7 @@ public class Room {
         this.name = name;
         this.country = country;
         lamp = new Lamp();
+        lamp.setState("On");
     }
 
     public Room(int id, String name, String country, Lamp lamp) {
