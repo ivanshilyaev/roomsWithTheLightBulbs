@@ -17,10 +17,14 @@
         Country: <br>
         <select name="country" id="country">
             <c:forEach items="${requestScope.mapCountries}" var="country">
-                <c:if test="${requestScope.userCountry.equals(country.key)}">
-                    <option selected value="${country.value}">${country.key}</option>
-                </c:if>
-                <option value="${country.value}">${country.key}</option>
+                <c:choose>
+                    <c:when test="${requestScope.userCountry.equals(country.key)}">
+                        <option selected value="${country.value}">${country.key}</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="${country.value}">${country.key}</option>
+                    </c:otherwise>
+                </c:choose>
             </c:forEach>
         </select>
     </label> <br>
