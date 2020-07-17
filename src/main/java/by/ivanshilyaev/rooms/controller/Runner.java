@@ -50,7 +50,7 @@ public class Runner {
         initConnectionPool();
         try {
             RoomService service = new RoomServiceImpl();
-            service.read();
+            System.out.println(service.read());
         } catch (ServiceException e) {
             e.printStackTrace();
         }

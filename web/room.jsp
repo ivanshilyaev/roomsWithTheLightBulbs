@@ -20,6 +20,10 @@
         <form class="menu-form" name="index" method="POST" action="${indexUrl}">
             <input type="submit" value="Main page">
         </form>
+        <c:url value="/listOfRooms.html" var="listOfRoomsUrl"/>
+        <form class="menu-form" name="listOfRooms" method="POST" action="${listOfRoomsUrl}">
+            <input type="submit" value="List of all rooms">
+        </form>
     </div>
 </div>
 </body>

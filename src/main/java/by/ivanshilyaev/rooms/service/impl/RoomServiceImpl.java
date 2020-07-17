@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
-    private static RoomDao dao = new RoomDaoImpl();
+    private RoomDao dao;
+
+    public RoomServiceImpl() {
+        dao = new RoomDaoImpl();
+    }
 
     @Override
     public Integer create(Room entity) throws ServiceException {
