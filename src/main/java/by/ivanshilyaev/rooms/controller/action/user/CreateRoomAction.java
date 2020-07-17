@@ -59,7 +59,9 @@ public class CreateRoomAction extends Action {
             request.setAttribute("createRoomMessage", "Invalid data! Try again");
             return null;
         }
-        Room room = new Room(name, country);
+        Room room = new Room();
+        room.setName(name);
+        room.setCountry(country);
         if (Controller.service.create(room) != -1) {
             Forward forward = new Forward("/listOfRooms.html");
             LOGGER.info(String.format("New room with id %d has been successfully created", room.getId()));
