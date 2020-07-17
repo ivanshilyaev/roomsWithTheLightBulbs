@@ -1,5 +1,6 @@
 package by.ivanshilyaev.rooms.controller.action.user;
 
+import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.controller.Controller;
 import by.ivanshilyaev.rooms.controller.action.Action;
@@ -62,6 +63,9 @@ public class CreateRoomAction extends Action {
         Room room = new Room();
         room.setName(name);
         room.setCountry(country);
+        Lamp lamp = new Lamp();
+        lamp.setState("On");
+        room.setLamp(lamp);
         if (Controller.service.create(room) != -1) {
             Forward forward = new Forward("/listOfRooms.html");
             LOGGER.info(String.format("New room with id %d has been successfully created", room.getId()));
