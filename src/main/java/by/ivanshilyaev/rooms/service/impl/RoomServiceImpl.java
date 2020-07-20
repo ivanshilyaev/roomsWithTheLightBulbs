@@ -57,4 +57,9 @@ public class RoomServiceImpl implements RoomService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void close() {
+        dao.closeConnection();
+    }
 }

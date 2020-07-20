@@ -16,4 +16,6 @@ public interface RoomService {
     void update(Room entity);
 
     boolean delete(Integer id) throws ServiceException;
+
+    void close();
 }

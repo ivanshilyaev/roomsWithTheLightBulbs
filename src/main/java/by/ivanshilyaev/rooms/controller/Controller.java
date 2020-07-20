@@ -40,8 +40,6 @@ public class Controller extends HttpServlet {
     public static final int DB_POOL_MAX_ACTIVE = 1000;
     public static final int DB_POOL_MAX_WAIT = 0;
 
-    public static RoomService service;
-
     @Override
     public void init() throws ServletException {
         try {
@@ -50,7 +48,6 @@ public class Controller extends HttpServlet {
                     DB_LOGIN, DB_PASSWORD, DB_POOL_START_ACTIVE,
                     DB_POOL_MAX_ACTIVE, DB_POOL_MAX_WAIT);
             LOGGER.info("Servlet has been started");
-            service = new RoomServiceImpl();
         } catch (DAOException | SQLException e) {
             LOGGER.error("Impossible to init connection pool", e);
             destroy();
@@ -72,6 +69,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
+            RoomService service = new RoomServiceImpl();
             HttpSession session = req.getSession(false);
             if (session != null) {
                 @SuppressWarnings("unchecked")
@@ -86,7 +84,8 @@ public class Controller extends HttpServlet {
             }
             Action action = (Action) req.getAttribute("action");
             ActionManager actionManager = new ActionManagerImpl();
-            Action.Forward forward = actionManager.execute(action, req, resp);
+            Action.Forward forward = actionManager.execute(action, req, resp, service);
+            service.close();
             if (session != null && forward != null && !forward.getAttributes().isEmpty()) {
                 session.setAttribute("redirectedData", forward.getAttributes());
             }

@@ -61,7 +61,7 @@ public class RoomDaoImpl implements RoomDao {
                 entity.setId(id);
                 return id;
             } else {
-                LOGGER.error("No autoincremented index after trying to add record into table user");
+                LOGGER.error("No autoincremented index after trying to add record into table room");
                 return BAD_CREATION_CODE;
             }
         } catch (SQLException throwables) {
@@ -146,5 +146,13 @@ public class RoomDaoImpl implements RoomDao {
             lamp.setState("On");
         }
         room.setLamp(lamp);
+    }
+
+    @Override
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+        }
     }
 }

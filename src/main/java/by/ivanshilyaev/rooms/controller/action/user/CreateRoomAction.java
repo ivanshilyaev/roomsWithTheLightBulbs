@@ -2,9 +2,9 @@ package by.ivanshilyaev.rooms.controller.action.user;
 
 import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
-import by.ivanshilyaev.rooms.controller.Controller;
 import by.ivanshilyaev.rooms.controller.action.Action;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
+import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
@@ -29,7 +29,7 @@ public class CreateRoomAction extends Action {
     private static final String PARAM_COUNTRY = "country";
 
     @Override
-    public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException {
         String name = request.getParameter(PARAM_NAME);
         String country = request.getParameter(PARAM_COUNTRY);
         String[] countryCodes = Locale.getISOCountries();
@@ -66,7 +66,7 @@ public class CreateRoomAction extends Action {
         Lamp lamp = new Lamp();
         lamp.setState("On");
         room.setLamp(lamp);
-        if (Controller.service.create(room) != -1) {
+        if (service.create(room) != -1) {
             Forward forward = new Forward("/listOfRooms.html");
             LOGGER.info(String.format("New room with id %d has been successfully created", room.getId()));
             return forward;

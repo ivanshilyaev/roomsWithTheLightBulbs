@@ -1,8 +1,8 @@
 package by.ivanshilyaev.rooms.controller.action.user;
 
-import by.ivanshilyaev.rooms.controller.Controller;
 import by.ivanshilyaev.rooms.controller.action.Action;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
+import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
@@ -24,7 +24,7 @@ public class RoomAction extends Action {
     private static final String PARAM_ROOM_ID = "roomId";
 
     @Override
-    public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException {
         try (Scanner s = new java.util.Scanner(new URL("https://api.ipify.org").openStream(), "UTF-8").useDelimiter("\\A")) {
             String ip = s.next();
             File database = new File("/Users/ivansilaev/Downloads/gitRepos/roomsWithTheLightBulbs/src/main/resources/GeoLite2-Country.mmdb");
@@ -39,7 +39,7 @@ public class RoomAction extends Action {
                 roomId = (int) request.getAttribute(PARAM_ROOM_ID);
             }
 
-            if (!Controller.service.read(roomId).get().getCountry().equals(country)) {
+            if (!service.read(roomId).get().getCountry().equals(country)) {
                 request.getServletContext().getRequestDispatcher("/error403.jsp").forward(request, response);
             }
             request.setAttribute("roomId", roomId);
