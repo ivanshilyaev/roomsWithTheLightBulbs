@@ -1,6 +1,7 @@
 package by.ivanshilyaev.rooms.service.interfaces;
 
 import by.ivanshilyaev.rooms.bean.Room;
+import by.ivanshilyaev.rooms.dao.interfaces.Transaction;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 
 import java.util.List;
@@ -13,9 +14,9 @@ public interface RoomService {
 
     Optional<Room> read(Integer id) throws ServiceException;
 
-    void update(Room entity);
+    void update(Room entity) throws ServiceException;
 
     boolean delete(Integer id) throws ServiceException;
 
-    void close();
+    void setTransaction(Transaction transaction);
 }

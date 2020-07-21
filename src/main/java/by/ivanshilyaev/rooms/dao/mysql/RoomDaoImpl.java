@@ -4,7 +4,6 @@ import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.interfaces.RoomDao;
-import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomDaoImpl implements RoomDao {
-    private Connection connection;
+    protected Connection connection;
 
     private static final Integer BAD_CREATION_CODE = -1;
 
@@ -34,15 +33,6 @@ public class RoomDaoImpl implements RoomDao {
 
     private static final String SQL_DELETE_ROOM_BY_ID =
             "DELETE FROM room WHERE id = ?;";
-
-
-    public RoomDaoImpl() {
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-        } catch (DAOException e) {
-            LOGGER.error("Unable to create connection to a database");
-        }
-    }
 
     @Override
     public Integer create(Room entity) throws DAOException {
@@ -149,10 +139,7 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     @Override
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException throwables) {
-        }
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

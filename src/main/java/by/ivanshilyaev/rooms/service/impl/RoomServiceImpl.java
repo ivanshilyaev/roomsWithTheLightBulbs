@@ -3,7 +3,7 @@ package by.ivanshilyaev.rooms.service.impl;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.interfaces.RoomDao;
-import by.ivanshilyaev.rooms.dao.mysql.RoomDaoImpl;
+import by.ivanshilyaev.rooms.dao.interfaces.Transaction;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 
@@ -11,15 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
-    private RoomDao dao;
-
-    public RoomServiceImpl() {
-        dao = new RoomDaoImpl();
-    }
+    protected Transaction transaction;
 
     @Override
     public Integer create(Room entity) throws ServiceException {
         try {
+            RoomDao dao = transaction.createDao(RoomDao.class);
             return dao.create(entity);
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -29,6 +26,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> read() throws ServiceException {
         try {
+            RoomDao dao = transaction.createDao(RoomDao.class);
             return dao.read();
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -38,6 +36,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Optional<Room> read(Integer id) throws ServiceException {
         try {
+            RoomDao dao = transaction.createDao(RoomDao.class);
             return dao.read(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -45,13 +44,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void update(Room entity) {
-        dao.update(entity);
+    public void update(Room entity) throws ServiceException {
+        try {
+            RoomDao dao = transaction.createDao(RoomDao.class);
+            dao.update(entity);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public boolean delete(Integer id) throws ServiceException {
         try {
+            RoomDao dao = transaction.createDao(RoomDao.class);
             return dao.delete(id);
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -59,7 +64,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void close() {
-        dao.closeConnection();
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 }

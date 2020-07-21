@@ -11,7 +11,8 @@ import java.util.List;
 
 public class ListOfRoomsAction extends Action {
     @Override
-    public Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException {
+    public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        RoomService service = factory.createService(RoomService.class);
         List<Room> rooms = service.read();
         request.getSession().setAttribute("rooms", rooms);
         return null;

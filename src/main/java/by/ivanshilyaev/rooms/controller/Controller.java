@@ -7,7 +7,9 @@ import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
+import by.ivanshilyaev.rooms.service.impl.ServiceFactoryImpl;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
+import by.ivanshilyaev.rooms.service.interfaces.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +41,10 @@ public class Controller extends HttpServlet {
     public static final int DB_POOL_START_ACTIVE = 10;
     public static final int DB_POOL_MAX_ACTIVE = 1000;
     public static final int DB_POOL_MAX_WAIT = 0;
+
+    private ServiceFactory getFactory() throws ServiceException {
+        return new ServiceFactoryImpl();
+    }
 
     @Override
     public void init() throws ServletException {
@@ -83,9 +89,9 @@ public class Controller extends HttpServlet {
                 }
             }
             Action action = (Action) req.getAttribute("action");
-            ActionManager actionManager = new ActionManagerImpl();
-            Action.Forward forward = actionManager.execute(action, req, resp, service);
-            service.close();
+            ActionManager actionManager = new ActionManagerImpl(getFactory());
+            Action.Forward forward = actionManager.execute(action, req, resp);
+            actionManager.close();
             if (session != null && forward != null && !forward.getAttributes().isEmpty()) {
                 session.setAttribute("redirectedData", forward.getAttributes());
             }

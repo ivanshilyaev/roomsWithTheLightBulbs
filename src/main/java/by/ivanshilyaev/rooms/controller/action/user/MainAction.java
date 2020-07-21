@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MainAction extends Action {
     @Override
-    public Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException {
+    public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         return null;
     }
 }

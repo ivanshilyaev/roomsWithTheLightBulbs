@@ -1,7 +1,7 @@
 package by.ivanshilyaev.rooms.controller.action;
 
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
-import by.ivanshilyaev.rooms.service.interfaces.RoomService;
+import by.ivanshilyaev.rooms.service.interfaces.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +12,12 @@ import java.util.Map;
 public abstract class Action {
     private String name;
 
+    protected ServiceFactory factory;
+
+    public void setFactory(ServiceFactory factory) {
+        this.factory = factory;
+    }
+
     public String getName() {
         return name;
     }
@@ -20,7 +26,7 @@ public abstract class Action {
         this.name = name;
     }
 
-    public abstract Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException;
+    public abstract Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException;
 
     public static class Forward implements Serializable {
         private String forward;

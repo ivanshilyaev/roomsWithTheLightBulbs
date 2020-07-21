@@ -3,8 +3,9 @@ package by.ivanshilyaev.rooms.controller;
 import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
-import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
+import by.ivanshilyaev.rooms.service.impl.ServiceFactoryImpl;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
+import by.ivanshilyaev.rooms.service.interfaces.ServiceFactory;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -19,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class RoomEndpoint {
     private Session session;
     private int roomId;
+    private ServiceFactory factory;
     private RoomService service;
     private static final Map<Integer, Set<RoomEndpoint>> repository = new ConcurrentHashMap<>();
 
@@ -26,7 +28,8 @@ public class RoomEndpoint {
     public void onOpen(Session session, @PathParam("roomId") int roomId) throws IOException, EncodeException, ServiceException {
         this.session = session;
         this.roomId = roomId;
-        service = new RoomServiceImpl();
+        factory = new ServiceFactoryImpl();
+        service = factory.createService(RoomService.class);
         if (repository.containsKey(roomId)) {
             repository.get(roomId).add(this);
         } else {
@@ -55,7 +58,7 @@ public class RoomEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
         repository.get(roomId).remove(this);
-        service.close();
+        factory.close();
     }
 
     @OnError
@@ -63,7 +66,7 @@ public class RoomEndpoint {
         // Do error handling here
     }
 
-    private static void broadcast(Lamp lamp, int roomId) throws IOException, EncodeException {
+    private static void broadcast(Lamp lamp, int roomId) {
         Set<RoomEndpoint> roomEndpoints = repository.get(roomId);
         roomEndpoints.forEach(endpoint -> {
             synchronized (endpoint) {

@@ -3,6 +3,7 @@ package by.ivanshilyaev.rooms.dao.interfaces;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,5 @@ public interface RoomDao {
 
     boolean delete(Integer id) throws DAOException;
 
-    void closeConnection();
+    void setConnection(Connection connection);
 }

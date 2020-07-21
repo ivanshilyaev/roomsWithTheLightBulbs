@@ -29,7 +29,7 @@ public class CreateRoomAction extends Action {
     private static final String PARAM_COUNTRY = "country";
 
     @Override
-    public Forward exec(HttpServletRequest request, HttpServletResponse response, RoomService service) throws ServiceException {
+    public Forward exec(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         String name = request.getParameter(PARAM_NAME);
         String country = request.getParameter(PARAM_COUNTRY);
         String[] countryCodes = Locale.getISOCountries();
@@ -66,6 +66,7 @@ public class CreateRoomAction extends Action {
         Lamp lamp = new Lamp();
         lamp.setState("On");
         room.setLamp(lamp);
+        RoomService service = factory.createService(RoomService.class);
         if (service.create(room) != -1) {
             Forward forward = new Forward("/listOfRooms.html");
             LOGGER.info(String.format("New room with id %d has been successfully created", room.getId()));

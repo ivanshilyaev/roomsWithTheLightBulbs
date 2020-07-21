@@ -4,11 +4,16 @@ import by.ivanshilyaev.rooms.bean.Lamp;
 import by.ivanshilyaev.rooms.bean.Room;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.interfaces.RoomDao;
+import by.ivanshilyaev.rooms.dao.interfaces.Transaction;
+import by.ivanshilyaev.rooms.dao.interfaces.TransactionFactory;
 import by.ivanshilyaev.rooms.dao.mysql.RoomDaoImpl;
+import by.ivanshilyaev.rooms.dao.mysql.TransactionFactoryImpl;
 import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
 import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
+import by.ivanshilyaev.rooms.service.impl.ServiceFactoryImpl;
 import by.ivanshilyaev.rooms.service.interfaces.RoomService;
+import by.ivanshilyaev.rooms.service.interfaces.ServiceFactory;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
@@ -49,7 +54,8 @@ public class Runner {
     public static void main(String[] args) {
         initConnectionPool();
         try {
-            RoomService service = new RoomServiceImpl();
+            ServiceFactory factory = new ServiceFactoryImpl();
+            RoomService service = factory.createService(RoomService.class);
             System.out.println(service.read());
         } catch (ServiceException e) {
             e.printStackTrace();
