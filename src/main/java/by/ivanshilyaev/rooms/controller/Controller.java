@@ -6,9 +6,7 @@ import by.ivanshilyaev.rooms.controller.action.ActionManagerImpl;
 import by.ivanshilyaev.rooms.dao.exception.DAOException;
 import by.ivanshilyaev.rooms.dao.pool.ConnectionPool;
 import by.ivanshilyaev.rooms.service.exception.ServiceException;
-import by.ivanshilyaev.rooms.service.impl.RoomServiceImpl;
 import by.ivanshilyaev.rooms.service.impl.ServiceFactoryImpl;
-import by.ivanshilyaev.rooms.service.interfaces.RoomService;
 import by.ivanshilyaev.rooms.service.interfaces.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,9 +32,11 @@ public class Controller extends HttpServlet {
     public static final String DB_PASSWORD = "application_password";
 
     // for remote db
-//    public static final String DB_URL = "jdbc:mysql://b3767a6f5042ec:ec1170a8@eu-cdbr-west-03.cleardb.net/heroku_03d39d7b1d078cd";
-//    public static final String DB_LOGIN = "b3767a6f5042ec";
-//    public static final String DB_PASSWORD = "ec1170a8";
+    /*
+    public static final String DB_URL = "jdbc:mysql://b3767a6f5042ec:ec1170a8@eu-cdbr-west-03.cleardb.net/heroku_03d39d7b1d078cd";
+    public static final String DB_LOGIN = "b3767a6f5042ec";
+    public static final String DB_PASSWORD = "ec1170a8";
+     */
 
     public static final int DB_POOL_START_ACTIVE = 10;
     public static final int DB_POOL_MAX_ACTIVE = 1000;
@@ -75,7 +75,6 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            RoomService service = new RoomServiceImpl();
             HttpSession session = req.getSession(false);
             if (session != null) {
                 @SuppressWarnings("unchecked")
